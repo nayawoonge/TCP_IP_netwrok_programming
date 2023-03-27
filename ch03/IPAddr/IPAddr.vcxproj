@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{8c39460b-244b-4367-865a-e7c1c4bcd44e}</ProjectGuid>
-    <RootNamespace>ch04</RootNamespace>
+    <ProjectGuid>{ac84ee88-d2ac-498b-8033-ea131d8ae6c1}</ProjectGuid>
+    <RootNamespace>IPAddr</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="TCP_Client.cpp" />
+    <ClCompile Include="IPAddr.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

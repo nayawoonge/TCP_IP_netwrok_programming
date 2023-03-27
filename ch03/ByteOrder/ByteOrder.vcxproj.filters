@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TCP_Client.cpp">
+    <ClCompile Include="ByteOrder.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
