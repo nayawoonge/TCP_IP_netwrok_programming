@@ -29,14 +29,13 @@ int main(int argc, char* argv[])
 	serveraddr.sin_family = AF_INET;
 	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
 	serveraddr.sin_port = htons(SERVERPORT);
-	
 	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR)
 		err_quit("connect()");
 
 	//데이터 통신에 사용할 변수
-	char buf[BUFSIZE + 1];
-	int len;
+	char buf[BUFSIZE + 1] = { 0, };
+	int len = 0;
 
 	//서버와 데이터 통신
 	while (1) 
@@ -50,6 +49,8 @@ int main(int argc, char* argv[])
 		len = (int)strlen(buf);
 		if (buf[len - 1] == '\n')
 			buf[len - 1] = '\0';
+		
+		//no data to send
 		if (0 == strlen(buf))
 			break;
 
@@ -60,6 +61,7 @@ int main(int argc, char* argv[])
 			err_display("send()");
 			break;
 		}
+		// no data received
 		else if (0 == retval)
 			break;
 		
@@ -67,6 +69,11 @@ int main(int argc, char* argv[])
 		buf[retval] = '\0';
 		printf("[TCP 클라이언트] %d 바이트를 받았습니다.\n", retval);
 		printf("[받은 데이터] %s\n", buf);
+
+		//closing condition
+		retval = strncmp(buf, "99", sizeof(buf));
+		if (0 == retval)
+			break;
 	}
 
 	//소켓 닫기
