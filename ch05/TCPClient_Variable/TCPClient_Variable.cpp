@@ -1,40 +1,34 @@
-#include "../../common.h"
-#include <string.h>
+#include "..\..\Common.h"
 
 char* SERVERIP = (char*)"127.0.0.1";
 #define SERVERPORT 9000
-#define BUFSIZE 50
+#define BUFSIZE    50
 
 int main(int argc, char* argv[])
 {
 	int retval;
 
-	//	명령행 인수가 있으면 IP주소로 사용
-	//	get IP address from users
-	if (argc > 1)
-		SERVERIP = argv[1];
+	// 명령행 인수가 있으면 IP 주소로 사용
+	if (argc > 1) SERVERIP = argv[1];
 
-	//	윈속 초기화
+	// 윈속 초기화
 	WSADATA wsa;
-	if (0 != WSAStartup(MAKEWORD(2, 2), &wsa))
+	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		return 1;
 
-	//	소켓 생성
-	SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-	if (INVALID_SOCKET == sock)
-		err_quit("socket()");
+	// 소켓 생성
+	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock == INVALID_SOCKET) err_quit("socket()");
 
-	// connet()
+	// connect()
 	struct sockaddr_in serveraddr;
 	memset(&serveraddr, 0, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	inet_pton(AF_INET, SERVERIP, &serveraddr.sin_addr);
 	serveraddr.sin_port = htons(SERVERPORT);
-	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));)
-	if (SOCKET_ERROR == retval)
-		err_quit("connect()");
+	retval = connect(sock, (struct sockaddr*)&serveraddr, sizeof(serveraddr));
+	if (retval == SOCKET_ERROR) err_quit("connect()");
 
-	//	buf
 	// 데이터 통신에 사용할 변수
 	char buf[BUFSIZE];
 	const char* testdata[] = {
@@ -43,15 +37,17 @@ int main(int argc, char* argv[])
 		"오늘따라 할 이야기가 많을 것 같네요",
 		"저도 그렇네요",
 	};
+	int len;
 
 	// 서버와 데이터 통신
 	for (int i = 0; i < 4; i++) {
 		// 데이터 입력(시뮬레이션)
-		memset(buf, '#', sizeof(buf));
-		strncpy(buf, testdata[i], strlen(testdata[i]));
+		len = (int)strlen(testdata[i]);
+		strncpy(buf, testdata[i], len);
+		buf[len++] = '\n';
 
 		// 데이터 보내기
-		retval = send(sock, buf, BUFSIZE, 0);
+		retval = send(sock, buf, len, 0);
 		if (retval == SOCKET_ERROR) {
 			err_display("send()");
 			break;
