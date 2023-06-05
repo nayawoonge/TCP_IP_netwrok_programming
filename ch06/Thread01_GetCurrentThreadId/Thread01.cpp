@@ -7,7 +7,7 @@ struct Point3D
 
 DWORD WINAPI MyThread(LPVOID arg) //MyThread 함수이름
 {
-	Sleep(1000); //1초 sleep
+	Sleep(1000); //	1초 sleep
 	Point3D* pt = (Point3D*)arg;
 	printf("Running my thread() %d: %d, %d, %d\n", GetCurrentThreadId(), pt->x, pt->y, pt->z);
 	return 0;
